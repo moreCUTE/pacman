@@ -4,9 +4,10 @@
 
 #include<iostream>
 #include "SFML/Graphics.hpp"
+#include"globals.h"
+#include"ghost.h"
 using namespace std;
 
-enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, down is 3
 
 int main() {
     //game set up (you'll need these lines in every game)
@@ -24,24 +25,24 @@ int main() {
 
     int map[20][20] = {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
-        1,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,0,0,1,1,0,0,1,1,1,1,1,0,1,0,0,0,0,1,
-        1,1,0,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,
-        1,0,0,1,0,0,0,1,1,0,0,0,1,0,1,0,0,0,0,1,
-        1,0,1,1,1,0,1,1,1,1,0,0,1,0,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,1,0,0,1,1,0,0,0,1,1,0,1,1,0,0,0,0,1,
-        1,0,1,1,0,0,0,1,1,1,0,0,0,1,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,
+        1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,0,1,0,1,
+        1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,1,
+        1,0,0,0,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,1,
+        1,1,0,0,0,1,0,0,0,0,0,1,1,0,1,1,1,1,0,1,
+        1,0,0,1,0,0,0,1,1,0,0,0,1,0,1,0,0,1,0,1,
+        0,0,1,1,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,
+        1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,1,
+        1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,1,
+        1,0,1,0,0,1,1,0,0,0,1,1,0,1,0,1,0,1,0,1,
+        1,0,1,1,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,
+        1,0,0,1,1,1,1,0,0,0,1,1,1,1,0,0,0,1,0,1,
+        1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,1,
+        1,0,0,1,1,1,1,1,1,1,1,0,1,0,1,1,0,1,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     };
 
@@ -59,11 +60,25 @@ int main() {
     bool keys[] = { false, false, false, false };
 
 
+    ghost Blinky;
+    Blinky.initGhost(215, 105, 1, 0, 1, sf::Color(123,211,222));
+
+    ghost Bob;
+    Bob.initGhost(230, 390, 1, 0, 1, sf::Color(255,0,255));
+
+    ghost Greg;
+    Greg.initGhost(1260, 545, 1, 0, 1, sf::Color(255, 140, 0));
+
+    ghost Dwayne;
+    Dwayne.initGhost(130, 1280, 1, 0, 1, sf::Color(205, 127, 50));
+   
+
+    
     //################### HOLD ONTO YOUR BUTTS, ITS THE GAME LOOP###############################################################
     while (screen.isOpen()) {//keep window open until user shuts it down
-
+   cout << xpos << ", " << ypos << endl;
         while (screen.pollEvent(event)) { //look for events-----------------------
-
+           
             //this checks if the user has clicked the little "x" button in the top right corner
             if (event.type == sf::Event::EventType::Closed)
                 screen.close();
@@ -154,11 +169,20 @@ int main() {
             cout << "colliding UP";
 
         }
-
+        //warp zone
+        if (xpos < -5 && ypos >= 585 && ypos < 645)
+            xpos = 1543;
+        if (xpos > 1543 && ypos >= 585 && ypos < 645)
+            xpos = -5;
+        
         xpos += vx;
         ypos += vy;
         player.setPosition(xpos, ypos);
 
+        Blinky.chase1(xpos, ypos, map);
+        Bob.chase2(xpos, ypos, map);
+        Greg.chase3(xpos, ypos, map);
+        Dwayne.chase4(xpos, ypos, map);
         if (map[ypos / 80][xpos / 80] == 0)
             map[ypos / 80][xpos / 80] = -1;
 
@@ -178,6 +202,12 @@ int main() {
                     screen.draw(dot);
                 }
             }
+
+   
+        Blinky.drawGhost(screen);
+        Bob.drawGhost(screen);
+        Greg.drawGhost(screen);
+        Dwayne.drawGhost(screen);
         screen.draw(dot);
         screen.draw(player); //draw player
         screen.display(); //flips memory drawings onto screen
